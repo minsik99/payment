@@ -22,7 +22,7 @@ StreamingPayment는 유튜브와 같은 스트리밍 플랫폼에서 동영상 �
 - 광고 등록 및 광고 수익 데이터 관리
 
 ### 3. **수익 정산**
-- 조회수, 광고 시청 횟수 기반 정산 데이터 생성
+- 조회수 기반 정산 데이터 생성
 - 정산 기록 조회 기능 제공
 
 ### 4. **통계 기능**
@@ -59,21 +59,33 @@ StreamingPayment는 유튜브와 같은 스트리밍 플랫폼에서 동영상 �
 
 ## 📚 **ERD 설계**
 
-### User Table
-- **설명**: 사용자 정보 및 인증 관리를 위한 테이블
+![Untitled (1)](https://github.com/user-attachments/assets/462149fc-5a50-4e22-aad4-865960816e9e)
+
+<details>
+<summary style="font-size: 20px; font-weight: bold;">User Table</summary>
+  <div markdown="1" style="font-size: 14px;"> <br/>
+  
+  **설명**: 사용자 정보 및 인증 관리를 위한 테이블
+
   | 컬럼명       | 타입               | 설명                          |
   |--------------|--------------------|-------------------------------|
   | id           | int [PK, Auto-Increment] | 사용자 ID (Primary Key)         |
   | username     | varchar(255)      | 사용자의 고유 이름              |
   | email        | varchar(255)      | 사용자의 이메일 주소 (고유값)     |
-  | password     | varchar(255)      | 사용자 비밀번호 (소셜 로그인 시 'SOCIAL_LOGIN' 저장) |
-  | social_id    | varchar(255)      | 소셜 로그인 고유 ID            |
+  | social_type  | varchar(255)      | 소셜 로그인 유형            |
   | role         | enum('USER', 'CREATOR') | 사용자 권한 (일반 사용자 또는 콘텐츠 제작자) |
   | created_at   | datetime          | 가입한 날짜                    |
   | updated_at   | datetime          | 마지막 업데이트 날짜             |
 
-### Video Table
-- **설명**: 동영상 정보를 관리하는 테이블
+  </div>
+</details>
+
+<details>
+<summary style="font-size: 20px; font-weight: bold;">Video Table</summary>
+  <div markdown="1" style="font-size: 14px;"> <br/>
+  
+ **설명**: 동영상 정보를 관리하는 테이블
+
   | 컬럼명       | 타입               | 설명                          |
   |--------------|--------------------|-------------------------------|
   | id           | int [PK, Auto-Increment] | 동영상 ID (Primary Key)         |
@@ -84,8 +96,15 @@ StreamingPayment는 유튜브와 같은 스트리밍 플랫폼에서 동영상 �
   | created_at   | datetime          | 동영상 등록일                  |
   | updated_at   | datetime          | 마지막 수정일                  |
 
-### Video Play Table
-- **설명**: 동영상 재생 기록을 저장하는 테이블
+  </div>
+</details>
+
+<details>
+<summary style="font-size: 20px; font-weight: bold;">Video Play Table</summary>
+  <div markdown="1" style="font-size: 14px;"> <br/>
+  
+ **설명**: 동영상 재생 기록을 저장하는 테이블
+
   | 컬럼명       | 타입               | 설명                          |
   |--------------|--------------------|-------------------------------|
   | id           | int [PK, Auto-Increment] | 재생 기록 ID (Primary Key)       |
@@ -96,8 +115,15 @@ StreamingPayment는 유튜브와 같은 스트리밍 플랫폼에서 동영상 �
   | play_duration| int               | 재생 시간 (초 단위)             |
   | created_at   | datetime          | 기록 생성일                    |
 
-### Advertise Table
-- **설명**: 광고 정보를 관리하는 테이블
+  </div>
+</details>
+
+<details>
+<summary style="font-size: 20px; font-weight: bold;">Advertise Table</summary>
+  <div markdown="1" style="font-size: 14px;"> <br/>
+  
+ **설명**: 광고 정보를 관리하는 테이블
+
   | 컬럼명       | 타입               | 설명                          |
   |--------------|--------------------|-------------------------------|
   | id           | int [PK, Auto-Increment] | 광고 ID (Primary Key)          |
@@ -105,20 +131,28 @@ StreamingPayment는 유튜브와 같은 스트리밍 플랫폼에서 동영상 �
   | created_at   | datetime          | 광고 등록일                   |
   | updated_at   | datetime          | 광고 수정일                   |
 
-### Payment Table
-- **설명**: 정산 정보를 관리하는 테이블
+  </div>
+</details>
+
+<details>
+<summary style="font-size: 20px; font-weight: bold;">Payment Table</summary>
+  <div markdown="1" style="font-size: 14px;"> <br/>
+  
+ **설명**: 정산 정보를 관리하는 테이블
+
   | 컬럼명       | 타입               | 설명                          |
   |--------------|--------------------|-------------------------------|
   | id           | int [PK, Auto-Increment] | 정산 ID (Primary Key)          |
   | user_id      | int [FK > user.id] | 사용자 ID (Foreign Key)        |
   | video_id     | int [FK > video.id]| 동영상 ID (Foreign Key)        |
   | revenue      | decimal(10,2)     | 정산 금액                     |
+  | view_count   | bigint            | 정산시 조회수                     |
   | payment_date | date              | 정산 날짜                     |
   | created_at   | datetime          | 기록 생성일                   |
+  | updated_at   | datetime          | 정산 기록 수정일                     |
 
----
-
-![Untitled (1)](https://github.com/user-attachments/assets/462149fc-5a50-4e22-aad4-865960816e9e)
+  </div>
+</details>
 
 ---
 
