@@ -33,4 +33,4 @@ spring:
             postLogger: true
 
 jwt:
-  secret: ${JWT_SECRET:default-jwt-secret}
+  secret: ${JWT_SECRET}

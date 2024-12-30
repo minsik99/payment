@@ -29,23 +29,23 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.FOUND).header("Location", googleAuthUrl).build();
     }
 
-    // Google 인증 후 Callback 처리
-    @GetMapping("/google/callback")
-    public ResponseEntity<TokenResponse> googleCallback(@RequestParam String code) {
-        try {
-            // Google에서 사용자 정보 가져오기
-            GoogleUserInfo googleUserInfo = googleOAuthService.getGoogleUserInfo(code);
-
-            // JWT 토큰 생성
-            TokenResponse tokenResponse = authService.authenticateGoogleUser(
-                    googleUserInfo.getEmail(),
-                    googleUserInfo.getName()
-            );
-
-            return ResponseEntity.ok(tokenResponse);
-        } catch (Exception e) {
-            log.error("Google OAuth Callback Error: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+//    // Google 인증 후 Callback 처리
+//    @GetMapping("/google/callback")
+//    public ResponseEntity<TokenResponse> googleCallback(@RequestParam String code) {
+//        try {
+//            // Google에서 사용자 정보 가져오기
+//            GoogleUserInfo googleUserInfo = googleOAuthService.getGoogleUserInfo(code);
+//
+//            // JWT 토큰 생성
+//            TokenResponse tokenResponse = authService.authenticateGoogleUser(
+//                    googleUserInfo.getEmail(),
+//                    googleUserInfo.getName()
+//            );
+//
+//            return ResponseEntity.ok(tokenResponse);
+//        } catch (Exception e) {
+//            log.error("Google OAuth Callback Error: {}", e.getMessage());
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
 }
