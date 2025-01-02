@@ -34,12 +34,9 @@ google:
   redirect:
     uri: ${GOOGLE_REDIRECT_URI}
 
-#logging:
-#  level:
-#    root: DEBUG
-#    com.sparta: DEBUG
-#    com.netflix.discovery: DEBUG
-#    org.springframework.cloud.netflix.eureka: DEBUG
+logging:
+  level:
+    org.springframework.security: DEBUG
 
 eureka:
   client:

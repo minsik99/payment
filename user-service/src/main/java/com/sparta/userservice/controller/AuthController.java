@@ -25,27 +25,25 @@ public class AuthController {
     // Google 로그인 URL 생성 및 반환
     @GetMapping("/google/login")
     public ResponseEntity<String> googleLogin() {
+        log.info("확인");
         String googleAuthUrl = googleOAuthService.getGoogleAuthUrl();
         return ResponseEntity.status(HttpStatus.FOUND).header("Location", googleAuthUrl).build();
     }
 
-//    // Google 인증 후 Callback 처리
-//    @GetMapping("/google/callback")
-//    public ResponseEntity<TokenResponse> googleCallback(@RequestParam String code) {
-//        try {
-//            // Google에서 사용자 정보 가져오기
-//            GoogleUserInfo googleUserInfo = googleOAuthService.getGoogleUserInfo(code);
-//
-//            // JWT 토큰 생성
-//            TokenResponse tokenResponse = authService.authenticateGoogleUser(
-//                    googleUserInfo.getEmail(),
-//                    googleUserInfo.getName()
-//            );
-//
-//            return ResponseEntity.ok(tokenResponse);
-//        } catch (Exception e) {
-//            log.error("Google OAuth Callback Error: {}", e.getMessage());
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//    }
+    // Google 인증 후 Callback 처리
+    @GetMapping("/google/callback")
+    public ResponseEntity<TokenResponse> googleCallback(@RequestParam String code) {
+        log.info("Callback hit with code: {}", code); // 디버깅 로그 추가
+        try {
+            GoogleUserInfo googleUserInfo = googleOAuthService.getGoogleUserInfo(code);
+            TokenResponse tokenResponse = authService.authenticateGoogleUser(
+                    googleUserInfo.getEmail(),
+                    googleUserInfo.getName()
+            );
+            return ResponseEntity.ok(tokenResponse);
+        } catch (Exception e) {
+            log.error("Google OAuth Callback Error: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

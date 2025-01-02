@@ -22,12 +22,6 @@ public class GoogleOAuthService {
     @Value("${GOOGLE_REDIRECT_URI}")
     private String redirectUri;
 
-//    @Value("${GOOGLE_TOKEN_URI}")
-//    private String tokenUri;
-//
-//    @Value("${GOOGLE_USER_INFO_URI}")
-//    private String userInfoUri;
-
     private final RestTemplateService restTemplateService;
 
     // Google 로그인 URL 생성
@@ -40,31 +34,35 @@ public class GoogleOAuthService {
                 .build().toUriString();
     }
 
-//    // Google에서 Access Token 가져오기
-//    public String getAccessToken(String code) {
-//        Map<String, String> params = new HashMap<>();
-//        params.put("client_id", clientId);
-//        params.put("client_secret", clientSecret);
-//        params.put("redirect_uri", redirectUri);
-//        params.put("grant_type", "authorization_code");
-//        params.put("code", code);
-//
-//        Map<String, Object> response = restTemplateService.post(tokenUri, params, Map.class);
-//        return (String) response.get("access_token");
-//    }
-//
-//    // Google에서 사용자 정보 가져오기
-//    public GoogleUserInfo getGoogleUserInfo(String code) {
-//        String accessToken = getAccessToken(code);
-//
-//        Map<String, String> headers = new HashMap<>();
-//        headers.put("Authorization", "Bearer " + accessToken);
-//
-//        Map<String, Object> response = restTemplateService.get(userInfoUri, headers, Map.class);
-//
-//        return new GoogleUserInfo(
-//                (String) response.get("email"),
-//                (String) response.get("name")
-//        );
-//    }
+    // Google에서 Access Token 가져오기
+    public String getAccessToken(String code) {
+        Map<String, String> params = new HashMap<>();
+        params.put("client_id", clientId);
+        params.put("client_secret", clientSecret);
+        params.put("redirect_uri", redirectUri);
+        params.put("grant_type", "authorization_code");
+        params.put("code", code);
+
+        Map<String, Object> response = restTemplateService.post(
+                "https://oauth2.googleapis.com/token", params, Map.class
+        );
+        return (String) response.get("access_token");
+    }
+
+    // Google에서 사용자 정보 가져오기
+    public GoogleUserInfo getGoogleUserInfo(String code) {
+        String accessToken = getAccessToken(code);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + accessToken);
+
+        Map<String, Object> response = restTemplateService.get(
+                "https://www.googleapis.com/oauth2/v2/userinfo", headers, Map.class
+        );
+
+        return new GoogleUserInfo(
+                (String) response.get("email"),
+                (String) response.get("name")
+        );
+    }
 }
