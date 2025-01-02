@@ -38,7 +38,7 @@ public class AuthService {
                     User newUser = new User();
                     newUser.setEmail(email);
                     newUser.setUsername(name);
-                    newUser.setRole(User.Role.USER); // 기본 역할 설정
+                    newUser.setRole(User.Role.USER);
                     newUser.setBlock(false);
                     newUser.setSocialType("Google");
                     return userRepository.save(newUser);

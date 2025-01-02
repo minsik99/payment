@@ -28,9 +28,6 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 무상태 세션 정책
                 .authorizeHttpRequests(authorize ->
                         authorize.anyRequest().permitAll()
-//                        authorize
-//                                .requestMatchers("/auth/google/**").permitAll() // Actuator 및 Eureka 엔드포인트 허용
-//                                .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .exceptionHandling(exceptionHandling ->
                         exceptionHandling.authenticationEntryPoint(new CustomAuthenticationEntryPoint()));
