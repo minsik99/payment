@@ -1,13 +1,20 @@
 package com.sparta.gatewayserver.filter;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     public JwtFilter() {
         super(Config.class);
@@ -15,6 +22,7 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
 
     @Override
     public GatewayFilter apply(Config config) {
+        log.info("게이트웨이 시크릿 키 : {}", secretKey);
         return (exchange, chain) -> {
             HttpHeaders headers = exchange.getRequest().getHeaders();
             String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
@@ -24,20 +32,31 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
                 throw new RuntimeException("Authorization header missing or invalid");
             }
 
-            // JWT 토큰 검증 로직 추가
-            String jwt = token.substring(7); // "Bearer " 제거
+            // JWT 토큰 검증 및 클레임 추출
+            String jwt = token.substring(7);
+            Claims claims;
             try {
-                // JWT 유효성 검증 (예: 서명 및 클레임 확인)
-                Jwts.parserBuilder()
-                    .setSigningKey("yourSecretKey".getBytes()) // 실제 비밀키 사용
-                    .build()
-                    .parseClaimsJws(jwt);
+                claims = Jwts.parserBuilder()
+                        .setSigningKey(secretKey.getBytes())
+                        .build()
+                        .parseClaimsJws(jwt)
+                        .getBody();
             } catch (Exception e) {
                 throw new RuntimeException("Invalid JWT token: " + e.getMessage());
             }
 
-            // 검증 성공 시 요청을 다음 필터로 전달
-            return chain.filter(exchange);
+            // 클레임에서 이메일과 역할 추출
+            String email = claims.getSubject();
+            String role = claims.get("role", String.class);
+
+            // 클레임 데이터를 요청 헤더에 추가
+            ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
+                    .header("email", email)
+                    .header("role", role)
+                    .build();
+
+            // 수정된 요청을 다음 필터로 전달
+            return chain.filter(exchange.mutate().request(modifiedRequest).build());
         };
     }
 

@@ -53,23 +53,23 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<TokenResponse> refreshAccessToken(@RequestHeader("Authorization") String authorizationHeader) {
         try {
-            // 1. Authorization 헤더에서 토큰 추출
+            // Authorization 헤더에서 토큰 추출
             String refreshToken = authorizationHeader.replace("Bearer ", "");
 
-            // 2. Refresh Token 유효성 검증
+            // Refresh Token 유효성 검증
             if (!jwtUtil.validateToken(refreshToken)) {
                 log.error("Invalid or expired Refresh Token");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             }
 
-            // 3. Refresh Token에서 사용자 이메일 추출
+            // Refresh Token에서 사용자 이메일 추출
             String email = jwtUtil.getEmail(refreshToken);
 
-            // 4. 새 Access Token 발급
+            // 새 Access Token 발급
             String newAccessToken = jwtUtil.createAccessToken(email, User.Role.USER);
             log.info("New Access Token generated");
 
-            // 5. 새 토큰 반환
+            // 새 토큰 반환
             return ResponseEntity.ok(new TokenResponse(newAccessToken, refreshToken));
         } catch (Exception e) {
             log.error("Error during token refresh: {}", e.getMessage());
