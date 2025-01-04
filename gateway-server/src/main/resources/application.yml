@@ -18,12 +18,30 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: user-service
+        # user-service
+        - id: user-service-auth
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/auth/**
+          filters:
+            - StripPrefix=1
+        - id: user-service-default
           uri: lb://user-service
           predicates:
             - Path=/user-service/**
           filters:
             - StripPrefix=1
+            - JwtFilter
+
+        # video-service
+        - id: video-service
+          uri: lb://video-service
+          predicates:
+            - Path=/video-service/**
+          filters:
+            - StripPrefix=1
+            - JwtFilter
+
       default-filters:
         - name: GlobalFilter
           args:
