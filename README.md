@@ -48,12 +48,10 @@ StreamingPayment는 유튜브와 같은 스트리밍 플랫폼에서 동영상 �
 ---
 
 ## 🔄 **아키텍처**
-1. **모놀리틱 초기 구조**
-   - 도메인별 디렉토리 분리
-   - 멀티모듈 전환을 위한 기반 설계
-2. **멀티모듈 전환** (계획)
+**멀티모듈**
+   - DDD 구조로 도메인 분리
    - API Gateway를 통한 MSA 구축
-   - 데이터베이스 분리 및 HTTP 통신 처리
+   - 모노레포 구조
 
 ---
 
@@ -93,6 +91,7 @@ StreamingPayment는 유튜브와 같은 스트리밍 플랫폼에서 동영상 �
   | title        | varchar(255)      | 동영상 제목                    |
   | length       | int               | 동영상 길이 (초 단위)            |
   | description  | text              | 동영상 설명                    |
+  | view_count  | int              | 동영상 조회수                  |
   | created_at   | datetime          | 동영상 등록일                  |
   | updated_at   | datetime          | 마지막 수정일                  |
 
@@ -114,6 +113,7 @@ StreamingPayment는 유튜브와 같은 스트리밍 플랫폼에서 동영상 �
   | play_end     | datetime          | 재생 종료 시간                  |
   | play_duration| int               | 재생 시간 (초 단위)             |
   | created_at   | datetime          | 기록 생성일                    |
+  | updated_at   | datetime          | 기록 수정일                   |
 
   </div>
 </details>
