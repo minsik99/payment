@@ -38,4 +38,10 @@ public class VideoService {
         }
     }
 
+    public void incrementViewCount(Long videoId) {
+        Video video = videoRepository.findById(videoId)
+                .orElseThrow(() -> new RuntimeException("Video not found"));
+        video.setViewCount(video.getViewCount() + 1);
+        videoRepository.save(video);
+    }
 }

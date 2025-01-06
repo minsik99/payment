@@ -24,10 +24,13 @@ public class Video {
     private String title;
 
     @Column(nullable = false)
-    private int length;
+    private Integer length;
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Column(name = "view_count")
+    private Integer viewCount = 0;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
