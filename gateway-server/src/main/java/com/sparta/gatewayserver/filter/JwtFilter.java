@@ -22,8 +22,17 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
 
     @Override
     public GatewayFilter apply(Config config) {
-        log.info("게이트웨이 시크릿 키 : {}", secretKey);
         return (exchange, chain) -> {
+
+            ServerHttpRequest request = exchange.getRequest();
+            String path = request.getURI().getPath();
+
+            // 내부 통신 경로 (배치 작업)
+            if (path.startsWith("/video-service/internal")) {
+                log.info("배치 작업을 위해 jwt 검증 안함");
+                return chain.filter(exchange);
+            }
+
             HttpHeaders headers = exchange.getRequest().getHeaders();
             String token = headers.getFirst(HttpHeaders.AUTHORIZATION);
 

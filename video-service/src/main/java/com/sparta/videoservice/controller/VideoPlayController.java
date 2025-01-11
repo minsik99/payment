@@ -9,17 +9,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/video/play")
 @RequiredArgsConstructor
 @Slf4j
 public class VideoPlayController {
     private final VideoPlayService videoPlayService;
 
-    @PostMapping
+    @PostMapping("/video/play")
     public ResponseEntity<VideoPlayResponse> playVideo(
             @RequestBody VideoPlayRequest videoPlayRequest,
             @RequestHeader("email") String email) {
         VideoPlayResponse response = videoPlayService.playVideo(videoPlayRequest, email);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/internal/play/duration/{videoId}")
+    public ResponseEntity<Long> getTotalPlayDuration(@PathVariable Long videoId) {
+        Long totalDuration = videoPlayService.getTotalPlayDuration(videoId);
+        return ResponseEntity.ok(totalDuration);
     }
 }

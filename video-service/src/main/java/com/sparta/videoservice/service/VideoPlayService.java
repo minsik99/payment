@@ -49,8 +49,8 @@ public class VideoPlayService {
         return userClient.getUserIdByEmail(email);
     }
 
-    private int calculateDuration(LocalDateTime start, LocalDateTime end) {
-        return (int) Duration.between(start, end).getSeconds();
+    private long calculateDuration(LocalDateTime start, LocalDateTime end) {
+        return Duration.between(start, end).getSeconds();
     }
 
     private void validateVideoExists(Long videoId) {
@@ -67,7 +67,7 @@ public class VideoPlayService {
     }
 
     private VideoPlayResponse handleExistingPlay(VideoPlay existingPlay, VideoPlayRequest request) {
-        int additionalDuration = calculateDuration(request.getPlayStart(), request.getPlayEnd());
+        long additionalDuration = calculateDuration(request.getPlayStart(), request.getPlayEnd());
         existingPlay.setPlayDuration(existingPlay.getPlayDuration() + additionalDuration);
         existingPlay.setUpdatedAt(LocalDateTime.now());
         videoPlayRepository.save(existingPlay);
@@ -93,5 +93,11 @@ public class VideoPlayService {
 
         return new VideoPlayResponse(videoPlay.getId(), videoPlay.getVideoId(),
                 videoPlay.getUserId(), videoPlay.getPlayDuration());
+    }
+
+    public Long getTotalPlayDuration(Long videoId) {
+        return videoPlayRepository.findByVideoId(videoId).stream()
+                .mapToLong(VideoPlay::getPlayDuration)
+                .sum();
     }
 }

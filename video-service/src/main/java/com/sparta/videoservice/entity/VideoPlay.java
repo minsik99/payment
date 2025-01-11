@@ -31,7 +31,7 @@ public class VideoPlay {
     private LocalDateTime playEnd;
 
     @Column(name = "play_duration", nullable = false)
-    private Integer playDuration;
+    private Long playDuration;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

@@ -2,12 +2,15 @@ package com.sparta.videoservice.service;
 
 import com.sparta.videoservice.client.UserClient;
 import com.sparta.videoservice.dto.VideoRequest;
+import com.sparta.videoservice.dto.VideoResponse;
 import com.sparta.videoservice.entity.Video;
 import com.sparta.videoservice.repository.VideoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +46,16 @@ public class VideoService {
                 .orElseThrow(() -> new RuntimeException("Video not found"));
         video.setViewCount(video.getViewCount() + 1);
         videoRepository.save(video);
+    }
+
+    public List<VideoResponse> getAllVideos() {
+        return videoRepository.findAll().stream()
+                .map(video -> VideoResponse.builder()
+                        .id(video.getId())
+                        .title(video.getTitle())
+                        .viewCount(video.getViewCount())
+                        .length(video.getLength())
+                        .build())
+                .toList();
     }
 }

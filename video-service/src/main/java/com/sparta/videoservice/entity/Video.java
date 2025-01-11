@@ -30,7 +30,7 @@ public class Video {
     private String description;
 
     @Column(name = "view_count")
-    private Integer viewCount = 0;
+    private Long viewCount = 0L;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

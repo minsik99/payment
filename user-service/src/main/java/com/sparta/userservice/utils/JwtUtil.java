@@ -18,7 +18,7 @@ public class JwtUtil {
     private String secretKey;
 
     // Access Token과 Refresh Token의 유효 시간
-    private final long accessTokenValidity = 3600000; // 1시간
+    private final long accessTokenValidity = 604800000; // 1시간 3600000
     private final long refreshTokenValidity = 604800000; // 7일
 
     // Access Token 생성
@@ -27,8 +27,6 @@ public class JwtUtil {
         claims.put("role", role.name());
         Date now = new Date();
         Date validity = new Date(now.getTime() + accessTokenValidity);
-
-        log.info("유저 서비스 시크릿 키 : {}", secretKey);
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)

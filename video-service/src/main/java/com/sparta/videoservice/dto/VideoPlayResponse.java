@@ -15,5 +15,5 @@ public class VideoPlayResponse {
     private Long id;
     private Long videoId;
     private Long userId;
-    private Integer playDuration;
+    private Long playDuration;
 }

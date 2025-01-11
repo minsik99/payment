@@ -42,6 +42,23 @@ spring:
             - StripPrefix=1
             - JwtFilter
 
+        # video-service-internal
+        - id: video-service-internal
+          uri: lb://video-service
+          predicates:
+            - Path=/video-service/internal/**
+          filters:
+            - StripPrefix=2
+
+        # statistic-service
+        - id: statistic-service
+          uri: lb://statistic-service
+          predicates:
+            - Path=/statistic-service/**
+          filters:
+            - StripPrefix=1
+            - JwtFilter
+
       default-filters:
         - name: GlobalFilter
           args:
