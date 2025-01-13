@@ -12,7 +12,7 @@ StreamingPayment는 유튜브와 같은 스트리밍 플랫폼에서 동영상 �
 ## 🌐 **기능 개요**
 ### 1. **회원 관리**
 - **회원가입**
-  - 소셜 로그인 (Google OAuth2 기반)
+  - 소셜 로그인 
   - 일반 회원과 판매자 계정 분리
 - **로그인 및 로그아웃**
   - JWT 기반 인증 및 권한 관리
@@ -28,11 +28,6 @@ StreamingPayment는 유튜브와 같은 스트리밍 플랫폼에서 동영상 �
 ### 4. **통계 기능**
 - 판매자 대시보드
   - 동영상별 조회수 및 광고 시청 통계
-- 월별 수익 데이터 시각화
-
-### 5. **관리 기능** (Soft Delete 지원)
-- 사용자 탈퇴 여부 및 계정 차단 관리
-- 동영상 삭제 여부 관리
 
 ---
 
@@ -40,10 +35,7 @@ StreamingPayment는 유튜브와 같은 스트리밍 플랫폼에서 동영상 �
 - **Backend**: Java 21, Spring Boot 3.4
 - **Database**: MySQL (Docker 기반)
 - **Authentication**: Spring Security, JWT, OAuth2 (Google)
-- **API 관리**: Swagger
 - **DevOps**: Docker, Docker Compose
-- **CI/CD**: GitHub Actions
-- **모니터링**: Grafana, Prometheus
 
 ---
 
@@ -57,7 +49,7 @@ StreamingPayment는 유튜브와 같은 스트리밍 플랫폼에서 동영상 �
 
 ## 📚 **ERD 설계**
 
-![Untitled (1)](https://github.com/user-attachments/assets/462149fc-5a50-4e22-aad4-865960816e9e)
+![Untitled](https://github.com/user-attachments/assets/621bcf85-7bd7-4a7f-b4d1-73035d9e3497)
 
 <details>
 <summary style="font-size: 20px; font-weight: bold;">User Table</summary>
@@ -168,14 +160,6 @@ StreamingPayment는 유튜브와 같은 스트리밍 플랫폼에서 동영상 �
    ```bash
    docker-compose up -d
    ```
-
-2. 애플리케이션 실행 후 Swagger를 통해 API 테스트:
-   ```bash
-   http://localhost:8080/swagger-ui/index.html
-   ```
-
-3. Google OAuth를 통한 회원가입 및 로그인 진행.
-
 ---
 
 ## 🔎 **추가 개선 사항**
